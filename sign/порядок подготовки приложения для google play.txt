@@ -1,0 +1,30 @@
+https://codeburst.io/publish-a-cordova-generated-android-app-to-the-google-play-store-c7ae51cccdd5
+
+
+Подготавливаем иконку и экран загрузки.
+.\resources кладём
+ icon.png размером не меньше 1024х1024
+ splash.png размером не меньше 2732х2732
+
+
+Теперь собираем apk:
+
+cordova build --release
+
+Если нет ключа, то генерируем ключ: key_gen.bat
+
+Ключ: Jupiter_JIM
+
+
+Копируем app-release-unsigned.apk в папку sign, запускаем sign.bat, чтобы подписать приложение.
+pass: Jupiter_JIM
+
+Оптимизируем apk : zipalign.bat
+
+Проверяем : verify.bat
+
+Публикуем:
+https://play.google.com/apps/publish/?account=5917743133750489445
+
+
+

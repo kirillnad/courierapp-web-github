@@ -1,0 +1,1 @@
+C:\Users\KIR\AppData\Local\Android\Sdk\build-tools\29.0.0-rc2\aapt dump badging %1 > version.txt

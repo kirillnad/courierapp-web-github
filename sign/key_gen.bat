@@ -1,0 +1,1 @@
+keytool -genkey -v -keystore jupiter_jim.jsk -alias jupiter_jim -keyalg RSA -keysize 2048 -validity 10000
