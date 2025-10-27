@@ -8,9 +8,14 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SettingsIcon from '@material-ui/icons/SettingsOutlined';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import RefreshOutlinedIcon from '@material-ui/icons/RefreshOutlined';
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
+
+import { ThemeColors } from '../helpers/ThemeColors'
+const colors = ThemeColors()
 
 
-const Header = (({ goBack, name, classes, showStat, reload }) => (
+
+const Header = (({ goBack, name, classes, showStat, reload, goHistory }) => (
   <AppBar position="static">
     <Toolbar className={classes.toolbar}>
       { goBack && (
@@ -24,6 +29,9 @@ const Header = (({ goBack, name, classes, showStat, reload }) => (
         <IconButton color="inherit" onClick={showStat} className={classes.arrow_right}>
           <InfoOutlinedIcon />
         </IconButton>
+        <IconButton color="inherit" onClick={goHistory} className={classes.history}>
+          <SearchOutlinedIcon />
+        </IconButton>
         <IconButton color="inherit" onClick={reload} className={classes.arrow_semileft}>
           <RefreshOutlinedIcon />
         </IconButton>
@@ -34,7 +42,7 @@ const Header = (({ goBack, name, classes, showStat, reload }) => (
 export default withStyles(theme => ({
   root: {
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: colors.themeColor1,
   },
   title: {
     flexGrow: 2,
@@ -53,6 +61,11 @@ export default withStyles(theme => ({
   arrow_right: {
     position: 'absolute',
     right: 0, top: 0,
+    height: '100%'
+  },
+  history: {
+    position: 'absolute',
+    right: 35, top: 0,
     height: '100%'
   },
   arrow_semileft: {

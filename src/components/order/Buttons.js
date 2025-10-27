@@ -157,11 +157,17 @@ export const ValutaButton = ({ order, active, valuta, onClick }) => {
 }
 
 
+export const SelectButton = ({ order, active, valuta, onClick }) => {
+  return (<Button 
+      variant="outlined"
+      onClick={onClick}
+      style={{whiteSpace: "pre-wrap"}}
+    > 
+    {"Принять \n заказ"}
+    </Button> )
+}
+
 export const DeselectButton = ({ order, active, valuta, onClick }) => {
-  if (order.prepayment===1) {
-    return null;
-  }
- 
   return (<Button 
       variant="outlined"
       onClick={onClick}

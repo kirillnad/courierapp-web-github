@@ -5,7 +5,7 @@ const axios = _axios.create({
     const query = Object.keys(params)
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
       .join('&')
-    return `${query.length ? '?' : ''}${query}`
+    return query
   },
   headers: {
     'Content-Type': 'text/plain',
@@ -29,7 +29,14 @@ axios.interceptors.request.use((config) => {
 //   }
 // )
 
-const get_req_url = response => response.config.url.slice(response.config.url.lastIndexOf("/") + 1);
+const get_req_url = (response) => {
+  try {
+    const url = response && response.config && response.config.url ? response.config.url : '';
+    return url.slice(url.lastIndexOf("/") + 1);
+  } catch (e) {
+    return '';
+  }
+};
 
 const error_handler = (resp) => {
 
@@ -101,7 +108,7 @@ export default {
   },
 
   async get (url, params = {}) {
-    return await axios.get(`http://${url}`, params).catch(error_handler)
+    return await axios.get(`http://${url}`, { params }).catch(error_handler)
   },
 
   async patch (url, data) {

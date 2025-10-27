@@ -12,8 +12,15 @@ import api from './api';
 import Scroller from './components/Scroller';
 import Settings from './components/Settings';
 import TakeOrder from './components/TakeOrder';
+import History from './components/History';
 // import CourierStatus from './components/CourierStatus';
 import Header from './components/Header';
+
+import './css/gogo.light.purple.scss'
+import './css/App.scss'
+
+import { ThemeColors } from './helpers/ThemeColors'
+const colors = ThemeColors()
 
 const NoData = () => <div />;
 const empty_error_dialog = {
@@ -318,12 +325,21 @@ reload = () => {
         goBack = () => this.changeState('CurrentPage', 'settings')
         break;
 
+      case 'history':
+        Component = History
+        goBack = () => this.changeState('CurrentPage', 'take_order')
+        break;
+
       default:
         Component = NoData
         goBack = null
     };
 
     return [Component, goBack]
+  }
+
+  goHistory = () => {
+    this.changeState('CurrentPage', 'history')
   }
 
   render() {
@@ -337,7 +353,7 @@ reload = () => {
     return (
       <div>
         <div className="app_header">
-          <Header name={CurrentName} goBack={goBack} showStat={this.show_stat} reload={this.reload} />
+          <Header name={CurrentName} goBack={goBack} showStat={this.show_stat} reload={this.reload} goHistory={this.goHistory} />
         </div>
 
         <Scroller scrollToTop={this.state.scrollToTop} changeState={this.changeState}>

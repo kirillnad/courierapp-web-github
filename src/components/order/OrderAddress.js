@@ -14,7 +14,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
  * onClick = открыть/закрыть строки заказа
  */
 /* OrderAddress - конструктор адреса доставки */
-const OrderAddress = ({ is_open, address, classes, name, sum_fact, deliver_at, onClick }) => (
+const OrderAddress = ({ is_open, address, comment, classes, name, sum_fact, deliver_at, onClick }) => (
   <div className={classes.order_address} >
 
 {/*
@@ -23,7 +23,7 @@ const OrderAddress = ({ is_open, address, classes, name, sum_fact, deliver_at, o
     </div>
 */}
     <div className={classes.order_info} onClick={onClick}>
-      {address}, &nbsp; {name }
+      {address} {comment}, &nbsp; {name }
     </div>
     <div style={{width: '0px', marginRight: '25px', marginLeft: '4px' }}>
        <ListItemAvatar>

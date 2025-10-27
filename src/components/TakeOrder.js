@@ -20,6 +20,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
+import { ThemeColors } from '../helpers/ThemeColors'
+const colors = ThemeColors()
+
 
 class TakeOrder extends React.Component {
   constructor(props) {
@@ -27,6 +30,7 @@ class TakeOrder extends React.Component {
 
     this.state = {
       delivering: new Set(), // uid'ы заказов, принятых к доставке
+      selectedOrders: new Set(), // uid'ы заказов, которые выбраны к доставке
       valutaChanged: new Set(), // uid'ы заказов, у которых изменился вид оплаты
       ready_to_deliver_dialog: false,
       take_delivering_dialog: false,
@@ -170,17 +174,23 @@ class TakeOrder extends React.Component {
             break
           case 'free': // свободен
             // setLocalOrders([]); // 111
-            this.allOrders = data.orders
-            if (this.allOrders.length == 0) {
-              this.setState({orders: data.orders})
-            }
-            break
+            // this.allOrders = data.orders
+            this.allOrders = data.orders.map(function (e) { 
+              e.selected=false
+              return e
+            })
+            setLocalOrders(this.allOrders || []); // 111
+            this.setState({orders: this.allOrders})
+          break
           case 'delivers_orders': // в дороге
             // setLocalOrders(data.orders || []); // 111
             // if (this._ismounted) {
             //   this.setState({ orders: data.orders || [] })
             // }
-            break
+            this.allOrders = data.orders
+            setLocalOrders(this.allOrders || []); // 111
+            this.setState({orders: this.allOrders})
+          break
           case 'returning': // возвращается
             break
           default:
@@ -201,12 +211,18 @@ class TakeOrder extends React.Component {
 
     this.setState({ ready_to_deliver_dialog: false })
 
+    // Фильтруем выбранные заказы с валидными UID
+    const ords = this.state.orders
+      .filter(e => e.selected === true && e.uid !== null)
+      .map(e => e.uid);
+
     const request = {
       'url': 'appoint_courier',
       'request': {
         'courier_uid': this.props.settings.uid,
         'tz_uid': this.props.settings.tz_uid,
-        'orders': this.state.orders.map(function (e) { return e.uid })
+        // 'orders': this.state.orders.map(function (e) { return e.uid })
+        'orders': ords
       }
     };
 
@@ -316,7 +332,8 @@ class TakeOrder extends React.Component {
     const request = {
       'url': 'courier_confirmed',
       'request': {
-        'order_uid': this.state.order.uid
+        'order_uid': this.state.order.uid,
+        'courier_uid': this.props.settings.uid,
       },
     };
 
@@ -341,6 +358,7 @@ class TakeOrder extends React.Component {
       'url': 'order_is_delivered',
       'request': {
         'order_uid': this.state.order.uid,
+        'courier_uid': this.props.settings.uid,
         pay_is_changed: (this.state.valutaChanged.has(this.state.order.uid) !== false ? 1 : 0)
       },
     };
@@ -489,16 +507,29 @@ class TakeOrder extends React.Component {
 orderDeselect = (order) => (e) => {
   e.preventDefault();
 
-    const newOrderList = this.state.orders.filter((item) => item.uid !== order.uid);
+    // const newOrderList = this.state.orders.filter((item) => item.uid !== order.uid);
+    // this.setState({
+    //   orders: newOrderList,
+    //   orderNum: ''
+    // });
+    // setLocalOrders(newOrderList);
+
+    order.selected = false;
+    this.setState({
+      orders : this.state.orders,
+    });
+    setLocalOrders(this.state.orders);
+}
+
+orderSelect = (order) => (e) => {
+  e.preventDefault();
+
+    order.selected = true;
 
     this.setState({
-      orders: newOrderList,
-      orderNum: ''
+      orders : this.state.orders,
     });
-
-    setLocalOrders(newOrderList);
-
-
+    setLocalOrders(this.state.orders);
 }
 
 
@@ -624,6 +655,7 @@ orderDeselect = (order) => (e) => {
 
     return (
       <Fragment>
+        {/*
         {courier_status === 'free' &&
 
           <TakeOrderHeader
@@ -640,6 +672,7 @@ orderDeselect = (order) => (e) => {
             orderNum={this.state.orderNum}
           />
         }
+        */}
 
         {/*
             <Divider />
@@ -668,6 +701,7 @@ orderDeselect = (order) => (e) => {
                   name={order.client.name}
                   phone={order.client.phone}
                   address={order.address}
+                  comment={order.comment}
                   sum_fact={order.sum_fact}
                   deliver_at={order.deliver_at}
                   delivering_time={order.delivering_time}
@@ -676,8 +710,10 @@ orderDeselect = (order) => (e) => {
                   valutaChanged={this.state.valutaChanged}
                   on_valuta_changed={this.valutaChangedOnChange(order)}
                   on_order_deselect={this.orderDeselect(order)}
+                  on_order_select={this.orderSelect(order)}
                   courier_status={this.state.courier_status}
                   tz_coordinates={this.state.tz_coordinates}
+                  selected={order.selected}
                 />
 {/*
                 <Divider className={classes.order_delim} />
@@ -719,7 +755,8 @@ orderDeselect = (order) => (e) => {
           ok={this.startDelivery}
         />
 
-        {(orders.length > 0) && (courier_status === 'free') &&
+
+        {(orders.length > 0) && (courier_status === 'free') && (Object.keys(this.state.orders.filter(e => e.selected === true && e.uid !== null)).length > 0) &&
           <Button variant="outlined"
             // startIcon={icon}
             color={"primary"}

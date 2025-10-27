@@ -6,7 +6,7 @@ import LocalShipping from '@material-ui/icons/LocalShipping';
 
 import OrderAddress from './OrderAddress';
 import OrderLine from './OrderLine';
-import {OrderNumButton, PhoneButton, DeliverButton, NavButton, SummaButton, ValutaButton, DeselectButton} from './Buttons.js';
+import {OrderNumButton, PhoneButton, DeliverButton, NavButton, SummaButton, ValutaButton, DeselectButton, SelectButton} from './Buttons.js';
 
 
 /*
@@ -20,14 +20,14 @@ import {OrderNumButton, PhoneButton, DeliverButton, NavButton, SummaButton, Valu
 /* Order - адрес доставки, имя, телефон, кнопка диалога */
 const Order = ({
   doneDeliverDialog, toggleLines, takeDeliverDialog,
-  name, phone, address, sum_fact, deliver_at, delivering_time,
+  name, phone, address, comment, sum_fact, deliver_at, delivering_time,
   classes, is_open, is_delivering, order_uid, order, 
-  valutaChanged, on_valuta_changed, on_order_deselect, courier_status, tz_coordinates
+  valutaChanged, on_valuta_changed, on_order_deselect, on_order_select, courier_status, tz_coordinates, selected
 }) => (
   <ListItem 
     style={{ marginTop: '0px', paddingTop: '4px', paddingBottom: '4px', paddingRight: '8px', paddingLeft: '8px'}} alignItems="flex-start" dense>
 
-    <div className={classes.order_item}>
+    <div className={classes.order_item} style={{backgroundColor:`${selected === false ? 'darkgray' : ''}`}}>
 
 
       <div className={classes.order_buttons} style={{marginBottom: "-8px", color: "#444444"}}>
@@ -50,7 +50,7 @@ const Order = ({
 */}
       <OrderAddress
           onClick={toggleLines} is_open={is_open}
-          name={name} address={address} sum_fact={sum_fact} deliver_at={deliver_at}
+          name={name} address={address} comment={comment} sum_fact={sum_fact} deliver_at={deliver_at}
       />
 
       {order.lines && order.lines.length && order.lines.map(
@@ -75,24 +75,31 @@ const Order = ({
         />
 
 
-        {courier_status == "free" ? 
+        {(courier_status === "free") && (selected === true) ? 
         (
-          <DeselectButton 
-              order={order}
-              onClick={on_order_deselect}
-          />
+              <DeselectButton 
+                order={order}
+                onClick={on_order_deselect}
+              />
+        ) : ""}
 
-        ) : 
+        {(courier_status === "free") && (selected !== true) ? 
+        (
+              <SelectButton 
+                order={order}
+                onClick={on_order_select}
+              />
+        ) : ""}
 
+        {(courier_status !== "free") ? 
         (
           <ValutaButton 
               order={order}
               active={(order.prepayment === 0) && valutaChanged.has(order.uid)}
-              valuta={order.cashless===1 ? "нал" : "картой"}
+              valuta={order.cashless===1 ? "Нал" : "Картой"}
               onClick={on_valuta_changed}
           />
-        )
-        }
+        ) : ""}
 
       </div>
 
