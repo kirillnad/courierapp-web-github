@@ -1,0 +1,41 @@
+$separator-color-light: #eef2f7;
+$separator-color: #e5e7eb;
+$background-color: #f7fafc;
+$foreground-color : #ffffff;
+$input-background: #ffffff;
+
+$dark-btn-background: #374151;
+$light-btn-background: #e5e7eb;
+
+$button-text-color: #ffffff;
+
+// Purple welcoming palette
+$theme-color-1: #873484;  // primary (purple)
+$theme-color-2: #a855f7;  // accent (purple light)
+$theme-color-3: #d6bcfa;  // lavender
+$theme-color-4: #6b21a8;  // primary dark
+$theme-color-5: #8b5cf6;  // vivid purple
+$theme-color-6: #5b21b6;  // deep purple
+
+$primary-color: #111827;   // text
+$secondary-color: #374151; // secondary text
+$muted-color: #6b7280;     // muted text
+
+$gradient-color-1 : #7b3fa1;
+$gradient-color-2 : #a855f7;
+$gradient-color-3 : #d6bcfa;
+
+$shadowOffsetsTop : 1 3 10 14 19;
+$shadowBlursTop: 1.5 5 10 14 19;
+$shadowOpacitiesTop: 0.04 0.1 0.19 0.25 0.3;
+
+$shadowOffsetsBottom : 1 3 6 10 15;
+$shadowBlursBottom: 3 6 6 5 6;
+$shadowOpacitiesBottom: 0.04 0.1 0.2 0.22 0.22;
+
+$logoPath: "/assets/img/logo_mobile_Jupiter.png";
+$logoPathMobile: "/assets/img/logo_mobile_Jupiter.png";
+
+@import "./_mixins.scss";
+@import "./_gogo.style.scss";
+@import "./mobiscroll.react.scss"

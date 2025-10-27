@@ -1,0 +1,13 @@
+.mobiscroll-layout {
+    user-select: none;
+    width: fit-content;
+    background-color: #fff;
+}
+
+.mobiscroll-layout > div input {
+    text-align: center;
+}
+
+.mobiscroll-layout.readonly > div:hover {
+      border-color: #d7d7d7;
+}
