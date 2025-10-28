@@ -1,4 +1,4 @@
-// https://help.2gis.ru/question/razrabotchikam-zapusk-ideystviya-vmobilnom-prilozhenii-cherez-deeplink
+﻿// https://help.2gis.ru/question/razrabotchikam-zapusk-ideystviya-vmobilnom-prilozhenii-cherez-deeplink
 
 import React from 'react';
 import Button from '@material-ui/core/Button';
@@ -30,7 +30,7 @@ export const OrderNumButton = ({ order, deliver_at }) => (
   // >
   <span>
 
-    Заказ № {order.build_number} доставить к {deliver_at}
+    {'\u0417\u0430\u043A\u0430\u0437 \u2116'} {order.build_number} {'\u0434\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C \u043A'} {deliver_at}
 
   </span>
   // </Button>
@@ -42,30 +42,25 @@ export const OrderNumButton = ({ order, deliver_at }) => (
 export const NavButton = ({ order, tz_coordinates }) => (
   <Button
       variant="text"
-      color="primary"
-      endIcon={<NavIcon />}
-      style={{margin: "-8px"}}
-      onClick={() => { 
-          if (order.coordinates === undefined) {
-            alert ("У этого заказа нет координат. Просто скопируйте адрес и вставьте в навигатор.")  
-          } else {
-            // window.open(`https://yandex.ru/maps/?from=api-maps&origin=jsapi_2_1_79&z=10&ll=${order.coordinates[1]}%2C${order.coordinates[0]}&pt=${order.coordinates[1]}%2C${order.coordinates[0]}`, '_system')
-        
-        let yaurl = `https://yandex.ru/maps/?from=api-maps&mode=routes&origin=jsapi_2_1_79&rtext=${tz_coordinates[0]}%2C${tz_coordinates[1]}~${order.coordinates[0]}%2C${order.coordinates[1]}&rtt=auto&ruri=~&z=10`
-
-        window.open(yaurl, '_system')
-        console.log (yaurl)
-
-          }
+      size="small"
+      className="route-badge"
+      endIcon={<NavIcon fontSize="small" />}
+      onClick={() => {
+        if (order.coordinates === undefined) {
+          alert('\u041D\u0435\u0442 \u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 \u0430\u0434\u0440\u0435\u0441.')
+        } else {
+          const yaurl = `https://yandex.ru/maps/?from=api-maps&mode=routes&origin=jsapi_2_1_79&rtext=${tz_coordinates[0]}%2C${tz_coordinates[1]}~${order.coordinates[0]}%2C${order.coordinates[1]}&rtt=auto&ruri=~&z=10`;
+          window.open(yaurl, '_system');
+          console.log(yaurl);
         }
-      }
+      }}
   >
-    Маршрут
-  </Button>
+     {'\u041C\u0430\u0440\u0448\u0440\u0443\u0442'}
+   </Button>
 )
 
         //   if (order.coordinates === undefined) {
-        //     alert ("У этого заказа нет координат. Просто скопируйте адрес и вставьте в навигатор.")  
+        //     alert ('\u041D\u0435\u0442 \u043A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 \u0430\u0434\u0440\u0435\u0441.' )  
         //   } else {
         //     console.log(`dgis://2gis.ru/routeSearch/rsType/car/to/${order.coordinates[1]},${order.coordinates[0]}`)
         //     if (window.cordova) {
@@ -116,6 +111,7 @@ console.log (`https://yandex.ru/maps/
       }
     }
   >
+    {'\u041C\u0430\u0440\u0448\u0440\u0443\u0442'}
   </Button>
 )
 
@@ -124,13 +120,14 @@ export const SummaButton = ({ order, prepayment, valuta, text, decoration }) => 
   return (
       <Button 
           variant="outlined"
-          // color="primary"
-          className=""
+          className="sum-chip"
       >
-        <span style={{display: "inline-block"}} >{text} 
-        <span style={{fontSize:"2em"}}>{order.sum_fact}</span> 
-        &nbsp; &#8381; &nbsp; 
-        <span style={{fontSize:"1.2em", textDecoration: `${decoration}`}} > {valuta} </span></span>
+        <span style={{display: "inline-flex", alignItems: 'baseline', gap: '4px'}}>
+          <span style={{opacity:.8, whiteSpace: 'nowrap'}}>{text}</span>
+          <span style={{fontSize:"1.3em", fontWeight: 700}}>{order.sum_fact}</span>
+          <span style={{opacity:.8}}>&#8381;</span>
+          <span style={{fontSize:"1em", textDecoration: `${decoration}`, opacity:.85}}>{valuta}</span>
+        </span>
       </Button>
     )
 
@@ -150,41 +147,50 @@ export const ValutaButton = ({ order, active, valuta, onClick }) => {
               color={active ? "secondary" : "default"}
               style={{color: `${color}`, whiteSpace: "pre-wrap"}}
             > 
-            {(active) ? "Оплачено: " : ""}
-            {(!active) ? "Изменить: " : ""}
+            {(active) ? '\u041F\u0440\u0435\u0434\u043E\u043F\u043B\u0430\u0442\u0430: ' : ''}
+            {(!active) ? '\u041E\u043F\u043B\u0430\u0442\u0430: ' : ''}
             {valuta} 
             </Button> )
 }
 
 
 export const SelectButton = ({ order, active, valuta, onClick }) => {
-  return (<Button 
-      variant="outlined"
+  return (
+    <Button 
+      variant="contained"
+      color="primary"
+      size="small"
+      className="action-equal"
       onClick={onClick}
-      style={{whiteSpace: "pre-wrap"}}
-    > 
-    {"Принять \n заказ"}
-    </Button> )
+      style={{whiteSpace: 'nowrap'}}
+    >
+      {'\u041F\u0440\u0438\u043D\u044F\u0442\u044C \u0437\u0430\u043A\u0430\u0437'}
+    </Button>
+  )
 }
 
 export const DeselectButton = ({ order, active, valuta, onClick }) => {
-  return (<Button 
+  return (
+    <Button 
       variant="outlined"
+      color="primary"
+      size="small"
+      className="action-equal"
       onClick={onClick}
-      style={{whiteSpace: "pre-wrap"}}
+      style={{whiteSpace: 'nowrap'}}
     > 
-    {"ОТКАЗАТЬСЯ \n от заказа"}
-    </Button> )
+      {'\u041E\u0442\u043A\u0430\u0437\u0430\u0442\u044C\u0441\u044F'}
+    </Button>
+  )
 }
 
 export const DeliverButton = ({ deliver_at, delivering_time, onClick, deliver_button, icon, color, order_uid }) => (
-  <Button variant="outlined" color={color}
-      // startIcon={icon}
+  <Button variant="contained" color={color} className="deliver-equal"
       onClick={onClick}
-      style={{width:"100%", marginTop: "12px", borderWidth: "2px"}}
+      style={{width:"100%", marginTop: "12px"}}
   >
-  Доставил
-{/*
+  {'\\u0414\\u043E\\u0441\\u0442\\u0430\\u0432\\u043B\\u0435\\u043D\\u043E'}
+  {/*
   <b>{deliver_at}</b>
     <p style={{fontSize: '1rem'}}>{deliver_at}</p>
   <CountDown
@@ -195,4 +201,7 @@ export const DeliverButton = ({ deliver_at, delivering_time, onClick, deliver_bu
 */}
   </Button>
 )
+
+
+
 

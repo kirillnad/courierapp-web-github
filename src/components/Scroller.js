@@ -29,6 +29,7 @@ export default class Scroller extends React.Component {
 
     return (
       <div
+        className="app-scroller"
         style={content}
         ref={this.scrolldiv}
         onScroll={e => this.props.changeState && this.props.changeState('scrollToTop', e.target.scrollTop)}
