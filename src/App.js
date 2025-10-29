@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,7 +11,7 @@ import api from './api';
 import Scroller from './components/Scroller';
 import Settings from './components/Settings';
 import TakeOrder from './components/TakeOrder';
-import History from './components/History';
+import History from './components/HistoryNew';
 // import CourierStatus from './components/CourierStatus';
 import Header from './components/Header';
 
@@ -30,38 +29,38 @@ const empty_error_dialog = {
 };
 
 const empty_showStat_dialog = {
-  "data": {
-    "result": "",
-    "day": {
-        "label": "",
-        "orders_qty": "" ,
-        "orders_sum": "",
-        "cash_sum": "",
-        "cashless_sum": "",
-        "wage": ""
+  data: {
+    result: '',
+    day: {
+      label: '',
+      orders_qty: '',
+      orders_sum: '',
+      cash_sum: '',
+      cashless_sum: '',
+      wage: ''
     },
-    "month": {
-        "label": "",
-        "orders_qty": "",
-        "orders_sum": "",
-        "cash_sum": "",
-        "cashless_sum": "",
-        "wage": ""
+    month: {
+      label: '',
+      orders_qty: '',
+      orders_sum: '',
+      cash_sum: '',
+      cashless_sum: '',
+      wage: ''
     }
   }
 };
 
 class App extends Component {
-  PROGRESS_TIMEOUT = null // константа: таймаут появления окна с прогрессом
+  PROGRESS_TIMEOUT = null // Константа: таймаут появления окна с прогрессом
 
   constructor(props) {
     super(props);
     this.state = {
-      CurrentPage: "",
+      CurrentPage: '',
       CurrentName: null,
       settings: {
         server_ip: '',
-        // status: "not_active",
+        // status: 'not_active',
         name: '',
         uid: '',
         login: '',
@@ -84,9 +83,9 @@ class App extends Component {
     let CurrentPage;
 
     if ([server_ip, uid].some(elm => elm.length === 0)) {
-      CurrentPage = "settings";
+      CurrentPage = 'settings';
     } else {
-      CurrentPage = "take_order";
+      CurrentPage = 'take_order';
     }
 
     this.setState({ settings, CurrentPage })
@@ -95,14 +94,13 @@ class App extends Component {
   // изменить состояние компонента App
   changeState = (name, data) => this.setState({ [name]: data })
 
-  // Крутилька
+  // Крутилка
   initProgress = () => { // создать окно с прогрессом, если ответа нет дольше, чем таймаут
     if (this.PROGRESS_TIMEOUT !== null) {
       clearInterval(this.PROGRESS_TIMEOUT)
     }
     this.PROGRESS_TIMEOUT = setInterval(
       () => this.setState({ progress: true }),
-      // 2000 // 1000 = 1 секунда
       1 // 1000 = 1 секунда
     )
   }
@@ -130,35 +128,29 @@ class App extends Component {
 
   api_post = ({ server_ip, url, request, progress = true }) => {
 
-    console.warn ("progress", progress)
-    console.log("url:", url)
+    console.warn ('progress', progress)
+    console.log('url:', url)
 
     if (progress) {
       this.initProgress();
     }
 
-    console.log("url_1:", url)
+    console.log('url_1:', url)
 
     return api.post(server_ip || this.state.settings.server_ip, url, request)
       .then(({ error, label, code = '', data = {}}) => {
-      // .then(response => {
 
-        console.log("data:", data)
-
-        // if (typeof response === "object") {
-        //   let { result, ...data_ } = data;
-        //   data = data_;
-        // }
+        console.log('data:', data)
 
         if (error) {
-
           switch (code) {
             case 'TIMEOUT_ERROR':
-              label = 'Нет подключения к сети интернет или сервер недоступен'
-              break;  
+              label = 'Истекло время ожидания ответа от сервера. Проверьте подключение'
+              break;
+            default:
+              break;
           }
 
-          data = { data, code, error, label };
           this.errorDialog({ label, error, code });
         } else if (progress) {
           this.dropProgress();
@@ -186,8 +178,10 @@ class App extends Component {
 
           switch (res.code) {
             case 'TIMEOUT_ERROR':
-              label = 'Нет подключения к сети интернет или сервер недоступен'
-              break;  
+              label = 'Истекло время ожидания ответа от сервера. Проверьте подключение'
+              break;
+            default:
+              break;
           }
 
           this.errorDialog({ label, error, code });
@@ -200,119 +194,71 @@ class App extends Component {
     })
   }
 
+  // --- navigator.geolocation ------------------------------
 
-// --- navigator.geolocation ------------------------------
+  geo_success = (position) => {
+    // reserved
+  }
 
-geo_success = (position) => {
+  geo_error = () => {
+    console.log ('geo_error')
+  }
 
-
-  // console.log ("geo_success")
-  // console.log(position.coords.latitude, position.coords.longitude);
-  // console.log ("uid")
-  // console.log (this.state.settings.uid)
-
-  // // Отправляем текущее положение на сервер
-  // const request = {
-  //   'url': 'set_current_location_couriers',
-  //   'progress': false,
-  //   'request': {
-  //     'location': {
-  //       'coords' : { 
-  //         'latitude': position.coords.latitude, 
-  //         'longitude': position.coords.longitude,
-  //         'param': 1
-  //       },
-  //     },
-  //     'courier_uid' : this.state.settings.uid,
-  //   }
-  // };
-
-  // this.api_post(request).then((response) => {
-  //      console.log("set_current_location_couriers response", response);
-  //     });
-
-
-}
-
-geo_error = () => {
-  console.log ("geo_error")
-}
-
-geo_options = {
-  enableHighAccuracy: false,
-  maximumAge: 30000,
-  timeout: 27000,
-};
-
-// wpid = navigator.geolocation.watchPosition(
-//   this.geo_success,
-//   this.geo_error,
-//   this.geo_options,
-// );
-
-
-sendLogMsg = (logmsg) => {
-  // логирование данных на сервере
-  const request = {
-    'url': 'logmsg',
-    'progress': false,
-    'request': {
-      'tz_uid': this.state.settings.tz_uid,
-      'courier_name': this.state.settings.name,
-      'courier_uid': this.state.settings.uid,
-      logmsg
-    }
+  geo_options = {
+    enableHighAccuracy: false,
+    maximumAge: 30000,
+    timeout: 27000,
   };
+
+  sendLogMsg = (logmsg) => {
+    const request = {
+      url: 'logmsg',
+      progress: false,
+      request: {
+        tz_uid: this.state.settings.tz_uid,
+        courier_name: this.state.settings.name,
+        courier_uid: this.state.settings.uid,
+        logmsg
+      }
+    };
     this.api_post(request);
   }
 
-
-show_stat = () => {
-
-
+  show_stat = () => {
     const request = {
-      'url': 'get_courier_stats',
-      'request': {
-        'courier_uid': this.state.settings.uid,
-        'tz_uid': this.state.settings.tz_uid
+      url: 'get_courier_stats',
+      request: {
+        courier_uid: this.state.settings.uid,
+        tz_uid: this.state.settings.tz_uid
       },
-      'progress': true
+      progress: true
     };
 
-
     return this.api_post(request).then((data) => {
-      console.log("get_courier_stats response", data);
+      console.log('get_courier_stats response', data);
 
-      if (data.result == "error" || data.status == "error") {
+      if (data.result == 'error' || data.status == 'error') {
         this.errorDialog({
-          label: (data.desc !== undefined ? data.desc : '') + " " + (data.message !== undefined ? data.message : ''),
+          label: (data.desc !== undefined ? data.desc : '') + ' ' + (data.message !== undefined ? data.message : ''),
           error: data.desc,
           code: data.code
         });
 
-        this.sendLogMsg((data.desc !== undefined ? data.desc : '') + " " + (data.message !== undefined ? data.message : ''));
+        this.sendLogMsg((data.desc !== undefined ? data.desc : '') + ' ' + (data.message !== undefined ? data.message : ''));
       } else {
-
-        // console.log (data.day.label)
         this.showStatDialog({data});
       }
     });
+  };
 
-};
+  reload = () => {
+    window.location.reload();
+  }
 
-reload = () => {
-  window.location.reload();
-}
-
-// ---------------------------------
-
-
-
+  // ---------------------------------
 
   pageRouter = (CurrentPage) => {
     let Component, goBack;
-
-    // const is_active = this.state.settings.status === "active";
 
     switch(CurrentPage) {
       case 'settings':
@@ -366,31 +312,27 @@ reload = () => {
         </Scroller>
 
         <Dialog className="app_progress" open={progress} fullWidth keepMounted>
-          <DialogTitle>Передача данных</DialogTitle>
-          <DialogContent style={{display: "flex", justifyContent: "center"}}>
-              <CircularProgress />
+          <DialogTitle>Загрузка</DialogTitle>
+          <DialogContent style={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
           </DialogContent>
         </Dialog>
 
         <Dialog className="dialog" open={is_error} fullWidth keepMounted>
-          <DialogTitle>Информация</DialogTitle>
+          <DialogTitle>Ошибка</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {error_context.label || ""}
-            {/*
-              <br/>
-              {error_context.error || ""}
-            */}
+              {error_context.label || ''}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained"
-                    color="primary"
-                    onClick={() => error_context.callback
-                      ? [this.errorDialog(), error_context.callback()]
-                      : this.errorDialog()
-                    }
-            >Ok</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.errorDialog()}
+            >
+              Ok
+            </Button>
           </DialogActions>
         </Dialog>
 
@@ -398,40 +340,35 @@ reload = () => {
           <DialogTitle>Статистика</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              <b>За сегодня: {showStat_context.data.day.label || ""} </b>
+              <b>День: {showStat_context.data.day.label || ''} </b>
               <br/>
-              Заказов: {showStat_context.data.day.orders_qty || ""}
+              Заказы: {showStat_context.data.day.orders_qty || ''}
               <br/>
-              На сумму: {showStat_context.data.day.orders_sum || ""}
+              Сумма заказов: {showStat_context.data.day.orders_sum || ''}
               <br/>
-              Наличными: {showStat_context.data.day.cash_sum || ""}
+              Наличные: {showStat_context.data.day.cash_sum || ''}
               <br/>
-              Картой: {showStat_context.data.day.cashless_sum || ""}
+              Безналичные: {showStat_context.data.day.cashless_sum || ''}
               <br/>
-              <u>Заработал: {showStat_context.data.day.wage || ""}</u>
+              <u>Заработок: {showStat_context.data.day.wage || ''}</u>
               <br/>
               <br/>
-              <b>За месяц: {showStat_context.data.month.label || ""} </b>
+              <b>Месяц: {showStat_context.data.month.label || ''} </b>
               <br/>
-              Заказов: {showStat_context.data.month.orders_qty || ""}
+              Заказы: {showStat_context.data.month.orders_qty || ''}
               <br/>
-              На сумму: {showStat_context.data.month.orders_sum || ""}
+              Сумма заказов: {showStat_context.data.month.orders_sum || ''}
               <br/>
-              Наличными: {showStat_context.data.month.cash_sum || ""}
+              Наличные: {showStat_context.data.month.cash_sum || ''}
               <br/>
-              Картой: {showStat_context.data.month.cashless_sum || ""}
+              Безналичные: {showStat_context.data.month.cashless_sum || ''}
               <br/>
-              <u>Заработал: {showStat_context.data.month.wage || ""}</u>
+              <u>Заработок: {showStat_context.data.month.wage || ''}</u>
               <br/>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      this.setState({ is_showStat: false }) }
-                    }
-            >Ok</Button>
+            <Button variant="contained" color="primary" onClick={() => this.setState({ is_showStat: false })}>Ok</Button>
           </DialogActions>
         </Dialog>
 
@@ -441,3 +378,4 @@ reload = () => {
 }
 
 export default App;
+

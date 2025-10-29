@@ -1,5 +1,5 @@
-// TODO
-// Очищать поле ввода номера заказа после поиска
+﻿// TODO
+// РћС‡РёС‰Р°С‚СЊ РїРѕР»Рµ РІРІРѕРґР° РЅРѕРјРµСЂР° Р·Р°РєР°Р·Р° РїРѕСЃР»Рµ РїРѕРёСЃРєР°
 
 import React, { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -29,16 +29,16 @@ class TakeOrder extends React.Component {
     super(props);
 
     this.state = {
-      delivering: new Set(), // uid'ы заказов, принятых к доставке
-      selectedOrders: new Set(), // uid'ы заказов, которые выбраны к доставке
-      valutaChanged: new Set(), // uid'ы заказов, у которых изменился вид оплаты
+      delivering: new Set(), // uid'С‹ Р·Р°РєР°Р·РѕРІ, РїСЂРёРЅСЏС‚С‹С… Рє РґРѕСЃС‚Р°РІРєРµ
+      selectedOrders: new Set(), // uid'С‹ Р·Р°РєР°Р·РѕРІ, РєРѕС‚РѕСЂС‹Рµ РІС‹Р±СЂР°РЅС‹ Рє РґРѕСЃС‚Р°РІРєРµ
+      valutaChanged: new Set(), // uid'С‹ Р·Р°РєР°Р·РѕРІ, Сѓ РєРѕС‚РѕСЂС‹С… РёР·РјРµРЅРёР»СЃСЏ РІРёРґ РѕРїР»Р°С‚С‹
       ready_to_deliver_dialog: false,
       take_delivering_dialog: false,
       access_geolocation_dialog: false,
       orders: [],
       order: {},
-      dialog_open: false, // флаг, да - открыт Диалог
-      order_show: null,    // uid заказа, который развернуть
+      dialog_open: false, // С„Р»Р°Рі, РґР° - РѕС‚РєСЂС‹С‚ Р”РёР°Р»РѕРі
+      order_show: null,    // uid Р·Р°РєР°Р·Р°, РєРѕС‚РѕСЂС‹Р№ СЂР°Р·РІРµСЂРЅСѓС‚СЊ
       position: null,
       orderNum: '',
       tz_coordinates: []
@@ -47,7 +47,7 @@ class TakeOrder extends React.Component {
     var inAppBrowserRef;
     var _ismounted;
     var allOrders = new Array();
-    var distance_to_tz_m; // Допустимое расстояние до торговой точки
+    var distance_to_tz_m; // Р”РѕРїСѓСЃС‚РёРјРѕРµ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РґРѕ С‚РѕСЂРіРѕРІРѕР№ С‚РѕС‡РєРё
   }
 
 
@@ -55,26 +55,26 @@ class TakeOrder extends React.Component {
 
   componentDidMount() {
 
-    this.distance_to_tz_m = 100; // Курьер должен быть ближе 100 м до ресторана, чтобы считалось, что он в ресторане
+    this.distance_to_tz_m = 100; // РљСѓСЂСЊРµСЂ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ Р±Р»РёР¶Рµ 100 Рј РґРѕ СЂРµСЃС‚РѕСЂР°РЅР°, С‡С‚РѕР±С‹ СЃС‡РёС‚Р°Р»РѕСЃСЊ, С‡С‚Рѕ РѕРЅ РІ СЂРµСЃС‚РѕСЂР°РЅРµ
 
     this._ismounted = true;
 
-    this.props.changeState('CurrentName', 'Мои заказы');
+    this.props.changeState('CurrentName', 'МОИ ЗАКАЗЫ');
 
     this.get_courier_state(true);
 
-    console.log ('Ранее взятые заказы', getLocalData().orders)
+    console.log ('Р Р°РЅРµРµ РІР·СЏС‚С‹Рµ Р·Р°РєР°Р·С‹', getLocalData().orders)
     this.state.orders = getLocalData().orders;
     this.state.tz_coordinates = getLocalData().tz_coordinates;
 
 
 
     if (window.cordova) {
-      // Периодическая отправка местоположения отключена, т.к. мы теперь контролируем время доставки по яндексу
+      // РџРµСЂРёРѕРґРёС‡РµСЃРєР°СЏ РѕС‚РїСЂР°РІРєР° РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёСЏ РѕС‚РєР»СЋС‡РµРЅР°, С‚.Рє. РјС‹ С‚РµРїРµСЂСЊ РєРѕРЅС‚СЂРѕР»РёСЂСѓРµРј РІСЂРµРјСЏ РґРѕСЃС‚Р°РІРєРё РїРѕ СЏРЅРґРµРєСЃСѓ
       // setTimeout(() => { this.configureBackgroundGeolocation(); }, 5000);
     } else { }
 
-      // Сначала получаем координаты
+      // РЎРЅР°С‡Р°Р»Р° РїРѕР»СѓС‡Р°РµРј РєРѕРѕСЂРґРёРЅР°С‚С‹
       // const pos = this.getGeoLocation();
       // console.log(pos);
 
@@ -102,7 +102,7 @@ class TakeOrder extends React.Component {
 
 
   sendLogMsg = (logmsg) => {
-    // логирование данных на сервере
+    // Р»РѕРіРёСЂРѕРІР°РЅРёРµ РґР°РЅРЅС‹С… РЅР° СЃРµСЂРІРµСЂРµ
     const request = {
       'url': 'logmsg',
       'progress': false,
@@ -129,7 +129,7 @@ class TakeOrder extends React.Component {
     }
   }
 
-  // progress - отображать progress или нет
+  // progress - РѕС‚РѕР±СЂР°Р¶Р°С‚СЊ progress РёР»Рё РЅРµС‚
   get_courier_state = async (progress) => {
 
     const request = {
@@ -153,7 +153,7 @@ class TakeOrder extends React.Component {
 
         this.sendLogMsg(data.error);
       } else {
-        // Успешно получен ответ список заказов
+        // РЈСЃРїРµС€РЅРѕ РїРѕР»СѓС‡РµРЅ РѕС‚РІРµС‚ СЃРїРёСЃРѕРє Р·Р°РєР°Р·РѕРІ
 
         setLocalParams(data.courier_status, data.frserver_address, data.tz_coordinates)
 
@@ -164,15 +164,15 @@ class TakeOrder extends React.Component {
         }
 
         switch (data.courier_status) {
-          case 'shift_closed': // смена закрыт
+          case 'shift_closed': // СЃРјРµРЅР° Р·Р°РєСЂС‹С‚
             // setLocalOrders([]); // 111
             this.props.errorDialog({
-              label: 'Смена курьера закрыта.',
-              error: "Попросите администратора открыть рабочую смену.",
+              label: 'РЎРјРµРЅР° РєСѓСЂСЊРµСЂР° Р·Р°РєСЂС‹С‚Р°.',
+              error: "РџРѕРїСЂРѕСЃРёС‚Рµ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° РѕС‚РєСЂС‹С‚СЊ СЂР°Р±РѕС‡СѓСЋ СЃРјРµРЅСѓ.",
               code: "SHIFT_CLOSED"
             });
             break
-          case 'free': // свободен
+          case 'free': // СЃРІРѕР±РѕРґРµРЅ
             // setLocalOrders([]); // 111
             // this.allOrders = data.orders
             this.allOrders = data.orders.map(function (e) { 
@@ -182,7 +182,7 @@ class TakeOrder extends React.Component {
             setLocalOrders(this.allOrders || []); // 111
             this.setState({orders: this.allOrders})
           break
-          case 'delivers_orders': // в дороге
+          case 'delivers_orders': // РІ РґРѕСЂРѕРіРµ
             // setLocalOrders(data.orders || []); // 111
             // if (this._ismounted) {
             //   this.setState({ orders: data.orders || [] })
@@ -191,7 +191,7 @@ class TakeOrder extends React.Component {
             setLocalOrders(this.allOrders || []); // 111
             this.setState({orders: this.allOrders})
           break
-          case 'returning': // возвращается
+          case 'returning': // РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ
             break
           default:
         }
@@ -211,7 +211,7 @@ class TakeOrder extends React.Component {
 
     this.setState({ ready_to_deliver_dialog: false })
 
-    // Фильтруем выбранные заказы с валидными UID
+    // Р¤РёР»СЊС‚СЂСѓРµРј РІС‹Р±СЂР°РЅРЅС‹Рµ Р·Р°РєР°Р·С‹ СЃ РІР°Р»РёРґРЅС‹РјРё UID
     const ords = this.state.orders
       .filter(e => e.selected === true && e.uid !== null)
       .map(e => e.uid);
@@ -237,7 +237,7 @@ class TakeOrder extends React.Component {
 
         this.sendLogMsg(data.desc);
       } else {
-        // Успешно получен ответ
+        // РЈСЃРїРµС€РЅРѕ РїРѕР»СѓС‡РµРЅ РѕС‚РІРµС‚
         if (this._ismounted) this.setState({ ready_to_deliver_dialog: false })
         this.get_courier_state(true);
       }
@@ -246,13 +246,13 @@ class TakeOrder extends React.Component {
 
 
   //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in m)
-  // Возвращает расстояние между точками в метрах
+  // Р’РѕР·РІСЂР°С‰Р°РµС‚ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РјРµР¶РґСѓ С‚РѕС‡РєР°РјРё РІ РјРµС‚СЂР°С…
   calcDist = (lat1, lon1, lat2, lon2) => {
     var toRad = (Value) => {
       return Value * Math.PI / 180;
     }
 
-    var R = 6378137; // Earth’s mean radius in meter
+    var R = 6378137; // EarthвЂ™s mean radius in meter
     var dLat = toRad(lat2 - lat1);
     var dLon = toRad(lon2 - lon1);
     var lat1 = toRad(lat1);
@@ -268,10 +268,10 @@ class TakeOrder extends React.Component {
   returning = async (e) => {
     e.preventDefault();
     try {
-      // // Сначала получаем координаты
+      // // РЎРЅР°С‡Р°Р»Р° РїРѕР»СѓС‡Р°РµРј РєРѕРѕСЂРґРёРЅР°С‚С‹
       // const pos = await this.getGeoLocation();
       // console.log(pos);
-      // // После успешного получения координат проверяем дистанцию до магазина
+      // // РџРѕСЃР»Рµ СѓСЃРїРµС€РЅРѕРіРѕ РїРѕР»СѓС‡РµРЅРёСЏ РєРѕРѕСЂРґРёРЅР°С‚ РїСЂРѕРІРµСЂСЏРµРј РґРёСЃС‚Р°РЅС†РёСЋ РґРѕ РјР°РіР°Р·РёРЅР°
       // let dist_m = this.calcDist(
       //   pos.coords.latitude,
       //   pos.coords.longitude,
@@ -279,13 +279,13 @@ class TakeOrder extends React.Component {
       //   this.state.tz_coordinates[1]
       // );
 
-      // this.sendLogMsg("Курьер вернулся. Координаты курьера: " + pos.coords.latitude + ',' + pos.coords.longitude + " Координаты магазина: " + this.state.tz_coordinates[0] + "," + this.state.tz_coordinates[1] + " Расстояние до магазина: " + dist_m);
+      // this.sendLogMsg("РљСѓСЂСЊРµСЂ РІРµСЂРЅСѓР»СЃСЏ. РљРѕРѕСЂРґРёРЅР°С‚С‹ РєСѓСЂСЊРµСЂР°: " + pos.coords.latitude + ',' + pos.coords.longitude + " РљРѕРѕСЂРґРёРЅР°С‚С‹ РјР°РіР°Р·РёРЅР°: " + this.state.tz_coordinates[0] + "," + this.state.tz_coordinates[1] + " Р Р°СЃСЃС‚РѕСЏРЅРёРµ РґРѕ РјР°РіР°Р·РёРЅР°: " + dist_m);
 
 
       // if ((dist_m > 0) && (dist_m > this.distance_to_tz_m)) {
       //   this.props.errorDialog({
-      //     label: 'Вы должны быть не дальше ' + this.distance_to_tz_m + ' м. от торговой точки.',
-      //     error: 'Вы должны быть не дальше ' + this.distance_to_tz_m + ' м. от торговой точки.',
+      //     label: 'Р’С‹ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РЅРµ РґР°Р»СЊС€Рµ ' + this.distance_to_tz_m + ' Рј. РѕС‚ С‚РѕСЂРіРѕРІРѕР№ С‚РѕС‡РєРё.',
+      //     error: 'Р’С‹ РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ РЅРµ РґР°Р»СЊС€Рµ ' + this.distance_to_tz_m + ' Рј. РѕС‚ С‚РѕСЂРіРѕРІРѕР№ С‚РѕС‡РєРё.',
       //     code: ""
       //   });
       //   return;
@@ -293,7 +293,7 @@ class TakeOrder extends React.Component {
 
 
 
-      // Если коориданты получены и проверка дистанции пройдена выполняем поселдующую логику
+      // Р•СЃР»Рё РєРѕРѕСЂРёРґР°РЅС‚С‹ РїРѕР»СѓС‡РµРЅС‹ Рё РїСЂРѕРІРµСЂРєР° РґРёСЃС‚Р°РЅС†РёРё РїСЂРѕР№РґРµРЅР° РІС‹РїРѕР»РЅСЏРµРј РїРѕСЃРµР»РґСѓСЋС‰СѓСЋ Р»РѕРіРёРєСѓ
 
       const request = {
         'url': 'came_back',
@@ -313,13 +313,13 @@ class TakeOrder extends React.Component {
 
           this.sendLogMsg(data.desc);
         } else {
-          // Успешно получен ответ
+          // РЈСЃРїРµС€РЅРѕ РїРѕР»СѓС‡РµРЅ РѕС‚РІРµС‚
           this.get_courier_state(true);
         }
       });
     } catch (error) {
-      // console.error("Ошибка при получении геолокации", error);
-      // Здесь можно обработать ошибки, если они произошли
+      // console.error("РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё РіРµРѕР»РѕРєР°С†РёРё", error);
+      // Р—РґРµСЃСЊ РјРѕР¶РЅРѕ РѕР±СЂР°Р±РѕС‚Р°С‚СЊ РѕС€РёР±РєРё, РµСЃР»Рё РѕРЅРё РїСЂРѕРёР·РѕС€Р»Рё
     }
 
 
@@ -395,21 +395,21 @@ class TakeOrder extends React.Component {
             navigator.geolocation.getCurrentPosition(
               (pos) => {
                 // it.props.errorDialog({
-                //   label: 'Успешная геолокация: ' + JSON.stringify(pos),
-                //   error: 'Успешная геолокация: ' + JSON.stringify(pos),
+                //   label: 'РЈСЃРїРµС€РЅР°СЏ РіРµРѕР»РѕРєР°С†РёСЏ: ' + JSON.stringify(pos),
+                //   error: 'РЈСЃРїРµС€РЅР°СЏ РіРµРѕР»РѕРєР°С†РёСЏ: ' + JSON.stringify(pos),
                 //   code: ""
                 // });
                 it.sendLogMsg(pos);
-                resolve(pos); // Возвращаем результат
+                resolve(pos); // Р’РѕР·РІСЂР°С‰Р°РµРј СЂРµР·СѓР»СЊС‚Р°С‚
               },
               (err) => {
                 it.sendLogMsg(err);
                 // it.props.errorDialog({
-                //   label: 'Ошибка геолокации: ' + JSON.stringify(err),
-                //   error: 'Ошибка геолокации: ' + JSON.stringify(err),
+                //   label: 'РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё: ' + JSON.stringify(err),
+                //   error: 'РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё: ' + JSON.stringify(err),
                 //   code: ""
                 // });
-                reject(err); // Отклоняем промис с ошибкой
+                reject(err); // РћС‚РєР»РѕРЅСЏРµРј РїСЂРѕРјРёСЃ СЃ РѕС€РёР±РєРѕР№
               },
               this.geoOptions
             );
@@ -418,15 +418,15 @@ class TakeOrder extends React.Component {
             this.setState({ access_geolocation_dialog: true});
 
             // this.props.errorDialog({
-            //   label: 'Включите геолокацию на устройстве.',
-            //   error: "Включите геолокацию на устройстве.",
+            //   label: 'Р’РєР»СЋС‡РёС‚Рµ РіРµРѕР»РѕРєР°С†РёСЋ РЅР° СѓСЃС‚СЂРѕР№СЃС‚РІРµ.',
+            //   error: "Р’РєР»СЋС‡РёС‚Рµ РіРµРѕР»РѕРєР°С†РёСЋ РЅР° СѓСЃС‚СЂРѕР№СЃС‚РІРµ.",
             //   code: ""
             // });
-            // reject(new Error("Геолокация отключена пользователем"));
+            // reject(new Error("Р“РµРѕР»РѕРєР°С†РёСЏ РѕС‚РєР»СЋС‡РµРЅР° РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј"));
           }
         });
       } else {
-        reject(new Error("Геолокация недоступна на данном устройстве"));
+        reject(new Error("Р“РµРѕР»РѕРєР°С†РёСЏ РЅРµРґРѕСЃС‚СѓРїРЅР° РЅР° РґР°РЅРЅРѕРј СѓСЃС‚СЂРѕР№СЃС‚РІРµ"));
       }
     });
   }
@@ -443,13 +443,13 @@ class TakeOrder extends React.Component {
       const location = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
-      // alert('Координаты получены:', location.coords);
+      // alert('РљРѕРѕСЂРґРёРЅР°С‚С‹ РїРѕР»СѓС‡РµРЅС‹:', location.coords);
     } catch (error) {
-      // alert('Ошибка геолокации:', error.message);
-      console.log('Ошибка геолокации:', error.message);
+      // alert('РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё:', error.message);
+      console.log('РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё:', error.message);
       // it.props.errorDialog({
-      //   label: 'Ошибка геолокации: ' + JSON.stringify(error),
-      //   error: 'Ошибка геолокации: ' + JSON.stringify(error),
+      //   label: 'РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё: ' + JSON.stringify(error),
+      //   error: 'РћС€РёР±РєР° РіРµРѕР»РѕРєР°С†РёРё: ' + JSON.stringify(error),
       //   code: ""
       // });
 
@@ -470,8 +470,8 @@ class TakeOrder extends React.Component {
     let already_got = ordersToShow.find(order => order.build_number === this.OrderNum);
     if (already_got !== undefined) { 
       this.props.errorDialog({
-        label: 'Вы уже выбрали этот заказ.',
-        error: "Вы уже выбрали этот заказ.",
+        label: 'Р’С‹ СѓР¶Рµ РІС‹Р±СЂР°Р»Рё СЌС‚РѕС‚ Р·Р°РєР°Р·.',
+        error: "Р’С‹ СѓР¶Рµ РІС‹Р±СЂР°Р»Рё СЌС‚РѕС‚ Р·Р°РєР°Р·.",
         code: ""
       });
       return;
@@ -481,8 +481,8 @@ class TakeOrder extends React.Component {
     let o = this.allOrders.find(order => order.build_number === this.OrderNum);
     if (!o) {
       this.props.errorDialog({
-        label: 'Такой заказ не найден.',
-        error: "Заказ не найден, обратитесь к администратору",
+        label: 'РўР°РєРѕР№ Р·Р°РєР°Р· РЅРµ РЅР°Р№РґРµРЅ.',
+        error: "Р—Р°РєР°Р· РЅРµ РЅР°Р№РґРµРЅ, РѕР±СЂР°С‚РёС‚РµСЃСЊ Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂСѓ",
         code: ""
       });
       return;
@@ -535,9 +535,9 @@ orderSelect = (order) => (e) => {
 
   // configureBackgroundGeolocation() {
   //   /* https://bitbucket.org/jupiter_team/courierapp/wiki/Home
-  //     /api/v1/set_current_location_couriers Данные о местоположении хранятся в памяти.
-  //     Для каждого курьера сохраняется только последнее местоположение, без истории
-  //     POST запрос:
+  //     /api/v1/set_current_location_couriers Р”Р°РЅРЅС‹Рµ Рѕ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРё С…СЂР°РЅСЏС‚СЃСЏ РІ РїР°РјСЏС‚Рё.
+  //     Р”Р»СЏ РєР°Р¶РґРѕРіРѕ РєСѓСЂСЊРµСЂР° СЃРѕС…СЂР°РЅСЏРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РїРѕСЃР»РµРґРЅРµРµ РјРµСЃС‚РѕРїРѕР»РѕР¶РµРЅРёРµ, Р±РµР· РёСЃС‚РѕСЂРёРё
+  //     POST Р·Р°РїСЂРѕСЃ:
   //     {
   //       "courier_uid": "4:3:0:298972",
   //       "coordinates": "54.123122,55.2312111"
@@ -546,8 +546,8 @@ orderSelect = (order) => (e) => {
 
   //   const { server_ip, name, uid } = this.props.settings;
   //   const config = {
-  //     // ...geoConfigStatic,  // вынес статичные настройки во внешний файл
-  //     //                      // тамже незадействованые куски плагина
+  //     // ...geoConfigStatic,  // РІС‹РЅРµСЃ СЃС‚Р°С‚РёС‡РЅС‹Рµ РЅР°СЃС‚СЂРѕР№РєРё РІРѕ РІРЅРµС€РЅРёР№ С„Р°Р№Р»
+  //     //                      // С‚Р°РјР¶Рµ РЅРµР·Р°РґРµР№СЃС‚РІРѕРІР°РЅС‹Рµ РєСѓСЃРєРё РїР»Р°РіРёРЅР°
 
   //     logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
   //     desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_MEDIUM,
@@ -574,12 +574,12 @@ orderSelect = (order) => (e) => {
   // }
 
   toggleShowLines = ({ uid }) => (e) => {
-    // клик показывает/прячет строки заказа
+    // РєР»РёРє РїРѕРєР°Р·С‹РІР°РµС‚/РїСЂСЏС‡РµС‚ СЃС‚СЂРѕРєРё Р·Р°РєР°Р·Р°
     e.preventDefault()
     if (this._ismounted) this.setState({
       order_show: this.state.order_show === uid
-        ? null // если уже открыт - закрыть
-        : uid  // id открытого заказа
+        ? null // РµСЃР»Рё СѓР¶Рµ РѕС‚РєСЂС‹С‚ - Р·Р°РєСЂС‹С‚СЊ
+        : uid  // id РѕС‚РєСЂС‹С‚РѕРіРѕ Р·Р°РєР°Р·Р°
     });
   }
 
@@ -598,13 +598,13 @@ orderSelect = (order) => (e) => {
 
   openMap = () => {
     if (this.state.maplink === "") {
-      // alert ('У первого заказа нет координат места назначения. К сожалению, автоматическое построение маршрута невозможно. Вы можете скопировать адрес и вставить его в навигатор.') 
+      // alert ('РЈ РїРµСЂРІРѕРіРѕ Р·Р°РєР°Р·Р° РЅРµС‚ РєРѕРѕСЂРґРёРЅР°С‚ РјРµСЃС‚Р° РЅР°Р·РЅР°С‡РµРЅРёСЏ. Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РїРѕСЃС‚СЂРѕРµРЅРёРµ РјР°СЂС€СЂСѓС‚Р° РЅРµРІРѕР·РјРѕР¶РЅРѕ. Р’С‹ РјРѕР¶РµС‚Рµ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ Р°РґСЂРµСЃ Рё РІСЃС‚Р°РІРёС‚СЊ РµРіРѕ РІ РЅР°РІРёРіР°С‚РѕСЂ.') 
       this.props.errorDialog({
         label: '',
-        error: "У первого заказа нет координат места назначения. К сожалению, автоматическое построение маршрута невозможно. Вы можете скопировать адрес и вставить его в навигатор.",
+        error: "РЈ РїРµСЂРІРѕРіРѕ Р·Р°РєР°Р·Р° РЅРµС‚ РєРѕРѕСЂРґРёРЅР°С‚ РјРµСЃС‚Р° РЅР°Р·РЅР°С‡РµРЅРёСЏ. Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РїРѕСЃС‚СЂРѕРµРЅРёРµ РјР°СЂС€СЂСѓС‚Р° РЅРµРІРѕР·РјРѕР¶РЅРѕ. Р’С‹ РјРѕР¶РµС‚Рµ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ Р°РґСЂРµСЃ Рё РІСЃС‚Р°РІРёС‚СЊ РµРіРѕ РІ РЅР°РІРёРіР°С‚РѕСЂ.",
         code: "NO_ORDER_COORDS"
       });
-      this.sendLogMsg('У первого заказа нет координат места назначения. К сожалению, автоматическое построение маршрута невозможно. Вы можете скопировать адрес и вставить его в навигатор.')
+      this.sendLogMsg('РЈ РїРµСЂРІРѕРіРѕ Р·Р°РєР°Р·Р° РЅРµС‚ РєРѕРѕСЂРґРёРЅР°С‚ РјРµСЃС‚Р° РЅР°Р·РЅР°С‡РµРЅРёСЏ. Рљ СЃРѕР¶Р°Р»РµРЅРёСЋ, Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РїРѕСЃС‚СЂРѕРµРЅРёРµ РјР°СЂС€СЂСѓС‚Р° РЅРµРІРѕР·РјРѕР¶РЅРѕ. Р’С‹ РјРѕР¶РµС‚Рµ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ Р°РґСЂРµСЃ Рё РІСЃС‚Р°РІРёС‚СЊ РµРіРѕ РІ РЅР°РІРёРіР°С‚РѕСЂ.')
       return
     }
     // let inAppBrowserRef = window.cordova.InAppBrowser.open(this.state.maplink + '#external', '_system')
@@ -660,7 +660,7 @@ orderSelect = (order) => (e) => {
 
           <TakeOrderHeader
             errorDialog={error => this.props.errorDialog({
-              label: 'Ошибка нотификации',
+              label: 'РћС€РёР±РєР° РЅРѕС‚РёС„РёРєР°С†РёРё',
               error,
               code: "NOTIFY_ERROR"
             })}
@@ -722,9 +722,14 @@ orderSelect = (order) => (e) => {
             ))}
           </List>
         }
+        {(!((courier_status == 'free') || (courier_status == 'delivers_orders'))) && (
+          <div style={{ padding: '16px', textAlign: 'center', color: 'var(--muted)' }}>
+            {'\u041D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0445 \u0437\u0430\u043A\u0430\u0437\u043E\u0432'}
+          </div>
+        )}
 
         <DialogCourier is_dialog={take_delivering_dialog}
-          title="Принять заказ к доставке?"
+          title={'\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044C, \u0447\u0442\u043E \u0432\u044B \u0432\u0437\u044F\u043B\u0438 \u0437\u0430\u043A\u0430\u0437?'}
           cancel={() => { if (this._ismounted) this.setState({ take_delivering_dialog: false }) }}
           ok={this.confirmDelivery} />
 
@@ -736,7 +741,7 @@ orderSelect = (order) => (e) => {
                 aria-labelledby="confirmation-dialog-title"
                 fullWidth
         >
-          <DialogContent>Разрешите использование геолокации! <br/><br/> Если запрос на включение геолокации в браузере не показывается, включите геолокацию вручную, как описано <a href="https://docs.jupiter.systems/link/838" target="_blank">в инструкции</a></DialogContent>
+          <DialogContent>{'\u0414\u043B\u044F \u0440\u0430\u0431\u043E\u0442\u044B \u043D\u0443\u0436\u043D\u043E \u0440\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u044C \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u0433\u0435\u043E\u043B\u043E\u043A\u0430\u0446\u0438\u0438!'} <br/><br/> {'\u041E\u0442\u043A\u0440\u043E\u0439\u0442\u0435 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0430/\u043F\u0440\u0438\u043B\u043E\u0436\u0435\u043D\u0438\u044F \u0438 \u0440\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u0435 \u0434\u043E\u0441\u0442\u0443\u043F \u043A \u043C\u0435\u0441\u0442\u043E\u043F\u043E\u043B\u043E\u0436\u0435\u043D\u0438\u044E.'} <a href="https://docs.jupiter.systems/link/838" target="_blank">{'\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u044F'}</a></DialogContent>
           <DialogActions>
             <Button onClick={this.accessGeo} variant="contained" color="primary">Ok</Button>
           </DialogActions>
@@ -744,38 +749,35 @@ orderSelect = (order) => (e) => {
 
 
         <DialogCourier is_dialog={dialog_open}
-          title="Заказ доставлен?"
+          title={'\u041F\u043E\u0434\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044C \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0443?'}
           cancel={() => { if (this._ismounted) this.setState({ dialog_open: false }) }}
           ok={this.handleOk}
         />
 
         <DialogCourier is_dialog={ready_to_deliver_dialog}
-          title="Все заказы выбраны, начинаете доставку?"
+          title={'\u0413\u043E\u0442\u043E\u0432\u044B \u043A \u043E\u0442\u044A\u0435\u0437\u0434\u0443 \u0441 \u0432\u044B\u0431\u0440\u0430\u043D\u043D\u044B\u043C\u0438 \u0437\u0430\u043A\u0430\u0437\u0430\u043C\u0438?'}
           cancel={() => { if (this._ismounted) this.setState({ ready_to_deliver_dialog: false }) }}
           ok={this.startDelivery}
         />
 
 
         {(orders.length > 0) && (courier_status === 'free') && (Object.keys(this.state.orders.filter(e => e.selected === true && e.uid !== null)).length > 0) &&
-          <Button variant="outlined"
-            // startIcon={icon}
-            color={"primary"}
-            onClick={this.ready_to_deliver_dialog_open}
-            style={{ width: "100%", marginTop: "12px", borderWidth: "2px" }}
-          >
-            Я поехал
-          </Button>
+          <div style={{ padding: '0 12px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={this.ready_to_deliver_dialog_open}
+              className="deliver-equal"
+              style={{ marginTop: "12px", width: '100%' }}
+            >
+              {'\u042F \u043F\u043E\u0435\u0445\u0430\u043B'}
+            </Button>
+          </div>
         }
 
         {(courier_status === 'returning') &&
-          <Button variant="outlined"
-            // startIcon={icon}
-            color={"primary"}
-            onClick={this.returning}
-            style={{ width: "100%", marginTop: "12px", borderWidth: "2px" }}
-          >
-            Я вернулся
-          </Button>
+          <Button variant="contained" color="primary" className="deliver-equal" onClick={this.returning} style={{ width: "100%", marginTop: "12px" }}>{'\u042F \u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u044E\u0441\u044C'}</Button>
         }
 
       </Fragment>
@@ -790,7 +792,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     // backgroundColor: theme.palette.background.paper,
-    backgroundColor: "lightgray"
+    backgroundColor: "transparent"
   },
   container: {
     display: 'flex',
@@ -808,3 +810,9 @@ const styles = theme => ({
 });
 
 export default withStyles(styles)(TakeOrder);
+
+
+
+
+
+

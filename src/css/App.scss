@@ -74,6 +74,12 @@ html, body {
   height: 36px !important;
 }
 
+/* Ensure accept/decline match height */
+.action-equal {
+  min-height: 36px !important;
+  height: 36px !important;
+}
+
 /* Route pill badge */
 .route-badge {
   background: #e6f0ff !important; /* light blue */
@@ -95,3 +101,10 @@ html, body {
 *::-webkit-scrollbar-thumb { background: rgba(17,24,39,0.18); border-radius: 10px; }
 *::-webkit-scrollbar-track { background: transparent; }
 
+/* Accept/Decline small pills */
+.btn-accept { border-radius: 12px !important; }
+.btn-decline {
+  background: #fde8ea !important;
+  color: #c81e1e !important;
+  border-radius: 12px !important;
+}

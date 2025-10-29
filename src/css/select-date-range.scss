@@ -1,13 +1,66 @@
 .mobiscroll-layout {
-    user-select: none;
-    width: fit-content;
-    background-color: #fff;
+  user-select: none;
+  width: 100%; /* stretch to full width */
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--separator-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  padding: 6px 10px;
+  margin: 12px; /* match list padding visually */
+  display: flex;
+  flex-direction: column; /* presets go under the range */
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* vertical space between range and presets */
 }
 
-.mobiscroll-layout > div input {
-    text-align: center;
+.mobiscroll-layout .mbi-label {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 0 6px 0 2px;
 }
+
+/* Put inputs on one line and unify look */
+.mobiscroll-layout > div { display: inline-flex; align-items: center; gap: 8px; flex-wrap: nowrap; }
+.mobiscroll-layout > div input {
+  text-align: center;
+  font-weight: 600;
+  box-sizing: border-box;
+  width: clamp(88px, 34vw, 140px); /* shrink to stay in one line */
+  height: 32px;
+  padding: 4px 8px; /* smaller inner paddings */
+  border: 1px solid var(--separator-color);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+@media (max-width: 360px) {
+  .mobiscroll-layout { gap: 6px; padding: 6px 8px; }
+  .mobiscroll-layout > div input { width: clamp(82px, 36vw, 132px); }
+}
+
+/* Preset chips under range */
+.preset-bar {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.preset-chip {
+  appearance: none;
+  border: 1px solid var(--separator-color);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 0.86rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.preset-chip:hover { filter: brightness(0.98); }
 
 .mobiscroll-layout.readonly > div:hover {
-      border-color: #d7d7d7;
+  border-color: #d7d7d7;
 }
