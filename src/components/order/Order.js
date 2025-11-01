@@ -54,7 +54,7 @@ const Order = ({
         <SummaButton
           order={order}
           prepayment={order.prepayment}
-          text={order.prepayment ? 'Предоплата:' : 'Заработок:'}
+          text={order.prepayment ? 'Предоплата:' : 'К оплате:'}
           valuta={order.prepayment ? '' : (order.cashless === 1 ? 'Картой' : 'Наличными')}
           decoration={valutaChanged.has(order.uid) ? 'line-through' : 'none'}
         />
