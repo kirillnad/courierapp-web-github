@@ -728,7 +728,7 @@ orderSelect = (order) => (e) => {
         )}
         {(!((courier_status == 'free') || (courier_status == 'delivers_orders'))) && (
           <div style={{ padding: '16px', textAlign: 'center', color: 'var(--muted)' }}>
-            {'\u041D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0445 \u0437\u0430\u043A\u0430\u0437\u043E\u0432'}
+            {'Все заказы доставлены'}
           </div>
         )}
 
