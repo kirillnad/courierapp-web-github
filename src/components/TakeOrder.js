@@ -678,50 +678,54 @@ orderSelect = (order) => (e) => {
             <Divider />
         */}
 
-        {((courier_status == "free") || (courier_status == "delivers_orders")) &&
-          <List className={classes.root} >
-            {Object.entries(orders).map(([_key, order]) => (
+        {((courier_status == "free") || (courier_status == "delivers_orders")) && (
+          orders.length > 0 ? (
+            <List className={classes.root} >
+              {Object.entries(orders).map(([_key, order]) => (
 
-              <Fragment key={order.uid}>
-                {/*
+                <Fragment key={order.uid}>
+                  {/* 
               <CountDown
               	deliver_at={order.deliver_at}
               	deliver_time={order.delivering_time ? order.delivering_time : 0}
               	ts={getLocalData().ts.filter(([uid, ts]) => uid === order.uid).pop()[1]}
             	/>
-                */}
-                <Order
-                  toggleLines={this.toggleShowLines(order)}
-                  doneDeliverDialog={this.selectOrder(order)}
-                  takeDeliverDialog={
-                    () => { if (this._ismounted) this.setState({ take_delivering_dialog: true, order }) }
-                  }
-                  is_open={order_show === order.uid}
-                  is_delivering={delivering.has(order.uid)}
-                  name={order.client.name}
-                  phone={order.client.phone}
-                  address={order.address}
-                  comment={order.comment}
-                  sum_fact={order.sum_fact}
-                  deliver_at={order.deliver_at}
-                  delivering_time={order.delivering_time}
-                  order_uid={order.uid}
-                  order={order}
-                  valutaChanged={this.state.valutaChanged}
-                  on_valuta_changed={this.valutaChangedOnChange(order)}
-                  on_order_deselect={this.orderDeselect(order)}
-                  on_order_select={this.orderSelect(order)}
-                  courier_status={this.state.courier_status}
-                  tz_coordinates={this.state.tz_coordinates}
-                  selected={order.selected}
-                />
+                  */}
+                  <Order
+                    toggleLines={this.toggleShowLines(order)}
+                    doneDeliverDialog={this.selectOrder(order)}
+                    takeDeliverDialog={
+                      () => { if (this._ismounted) this.setState({ take_delivering_dialog: true, order }) }
+                    }
+                    is_open={order_show === order.uid}
+                    is_delivering={delivering.has(order.uid)}
+                    name={order.client.name}
+                    phone={order.client.phone}
+                    address={order.address}
+                    comment={order.comment}
+                    sum_fact={order.sum_fact}
+                    deliver_at={order.deliver_at}
+                    delivering_time={order.delivering_time}
+                    order_uid={order.uid}
+                    order={order}
+                    valutaChanged={this.state.valutaChanged}
+                    on_valuta_changed={this.valutaChangedOnChange(order)}
+                    on_order_deselect={this.orderDeselect(order)}
+                    on_order_select={this.orderSelect(order)}
+                    courier_status={this.state.courier_status}
+                    tz_coordinates={this.state.tz_coordinates}
+                    selected={order.selected}
+                  />
 {/*
-                <Divider className={classes.order_delim} />
+                  <Divider className={classes.order_delim} />
 */}
-              </Fragment>
-            ))}
-          </List>
-        }
+                </Fragment>
+              ))}
+            </List>
+          ) : (
+            <div className={classes.emptyState}>{'Заказов для доставки пока нет'}</div>
+          )
+        )}
         {(!((courier_status == 'free') || (courier_status == 'delivers_orders'))) && (
           <div style={{ padding: '16px', textAlign: 'center', color: 'var(--muted)' }}>
             {'\u041D\u0435\u0442 \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u0445 \u0437\u0430\u043A\u0430\u0437\u043E\u0432'}
@@ -777,7 +781,7 @@ orderSelect = (order) => (e) => {
         }
 
         {(courier_status === 'returning') &&
-          <Button variant="contained" color="primary" className="deliver-equal" onClick={this.returning} style={{ width: "100%", marginTop: "12px" }}>{'\u042F \u0432\u043E\u0437\u0432\u0440\u0430\u0449\u0430\u044E\u0441\u044C'}</Button>
+          <Button variant="contained" color="primary" className="deliver-equal" onClick={this.returning} style={{ width: "100%", marginTop: "12px" }}>{'Я вернулся'}</Button>
         }
 
       </Fragment>
@@ -806,6 +810,11 @@ const styles = theme => ({
   },
   listnesteditem: {
     padding: "2px",
+  },
+  emptyState: {
+    padding: '32px 16px',
+    textAlign: 'center',
+    color: 'var(--muted)',
   },
 });
 

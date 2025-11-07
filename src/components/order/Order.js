@@ -13,8 +13,16 @@ const Order = ({
   name, phone, address, comment, sum_fact, deliver_at, delivering_time,
   classes, is_open, is_delivering, order_uid, order,
   valutaChanged, on_valuta_changed, on_order_deselect, on_order_select, courier_status, tz_coordinates, selected
-}) => (
-  <ListItem
+}) => {
+  const isCashlessOriginal = order.cashless === 1;
+  const paymentChanged = valutaChanged.has(order.uid);
+  const isCashlessEffective = paymentChanged ? !isCashlessOriginal : isCashlessOriginal;
+  const originalPaymentLabel = order.prepayment ? '' : (isCashlessOriginal ? 'Картой' : 'Наличными');
+  const effectivePaymentLabel = order.prepayment ? '' : (isCashlessEffective ? 'Картой' : 'Наличными');
+  const toggleTargetLabel = order.prepayment ? '' : (isCashlessEffective ? 'Наличными' : 'Картой');
+
+  return (
+    <ListItem
     style={{ marginTop: '0px', marginBottom: '12px', paddingTop: '8px', paddingBottom: '8px', paddingRight: '12px', paddingLeft: '12px' }} alignItems="flex-start" dense>
 
     <div className={classes.order_item} style={{
@@ -55,8 +63,9 @@ const Order = ({
           order={order}
           prepayment={order.prepayment}
           text={order.prepayment ? 'Предоплата:' : 'К оплате:'}
-          valuta={order.prepayment ? '' : (order.cashless === 1 ? 'Картой' : 'Наличными')}
-          decoration={valutaChanged.has(order.uid) ? 'line-through' : 'none'}
+          valuta={order.prepayment ? '' : originalPaymentLabel}
+          changedValuta={paymentChanged ? effectivePaymentLabel : undefined}
+          decoration={paymentChanged ? 'line-through' : 'none'}
         />
 
         {(courier_status === 'free') && (selected === true) ? (
@@ -76,8 +85,8 @@ const Order = ({
         {(courier_status !== 'free') ? (
           <ValutaButton
             order={order}
-            active={(order.prepayment === 0) && valutaChanged.has(order.uid)}
-            valuta={order.cashless === 1 ? 'Картой' : 'Наличными'}
+            active={(order.prepayment === 0) && paymentChanged}
+            valuta={toggleTargetLabel}
             onClick={on_valuta_changed}
           />
         ) : ''}
@@ -97,7 +106,8 @@ const Order = ({
       }
     </div>
   </ListItem>
-)
+  );
+};
 
 const styles = theme => ({
 

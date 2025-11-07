@@ -62,7 +62,9 @@ export const AllOrdersButton = ({ orders = [] }) => (
   </Button>
 )
 
-export const SummaButton = ({ order, prepayment, valuta, text, decoration }) => {
+export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, decoration }) => {
+  const currentValuta = changedValuta || valuta;
+  const previousValuta = changedValuta ? valuta : null;
   return (
     <Button
       variant="outlined"
@@ -72,7 +74,17 @@ export const SummaButton = ({ order, prepayment, valuta, text, decoration }) => 
         <span style={{ opacity: .8, whiteSpace: 'nowrap' }}>{text}</span>
         <span style={{ fontSize: '1.3em', fontWeight: 700 }}>{order.sum_fact}</span>
         <span style={{ opacity: .8 }}>&#8381;</span>
-        <span style={{ fontSize: '1em', textDecoration: `${decoration}`, opacity: .85 }}>{valuta}</span>
+        <span style={{ fontSize: '1em', opacity: .85, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+          {previousValuta && (
+            <span style={{ textDecoration: `${decoration}`, opacity: .75 }}>{previousValuta}</span>
+          )}
+          {previousValuta && currentValuta && (
+            <span style={{ opacity: .6 }}>→</span>
+          )}
+          {currentValuta && (
+            <span style={{ fontWeight: 600 }}>{currentValuta}</span>
+          )}
+        </span>
       </span>
     </Button>
   )
@@ -82,6 +94,7 @@ export const ValutaButton = ({ order, active, valuta, onClick }) => {
   if (order.prepayment === 1) {
     return null;
   }
+  const label = valuta ? `или ${valuta} ?` : 'Изменить';
   return (
     <Button
       variant="outlined"
@@ -89,7 +102,7 @@ export const ValutaButton = ({ order, active, valuta, onClick }) => {
       color={active ? 'secondary' : 'default'}
       style={{ whiteSpace: 'pre-wrap' }}
     >
-      {'Оплата: '} {valuta}
+      {label}
     </Button>
   )
 }
