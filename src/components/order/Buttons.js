@@ -65,6 +65,13 @@ export const AllOrdersButton = ({ orders = [] }) => (
 export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, decoration }) => {
   const currentValuta = changedValuta || valuta;
   const previousValuta = changedValuta ? valuta : null;
+  const formattedSum = (() => {
+    const numeric = Number(order.sum_fact);
+    if (Number.isNaN(numeric)) {
+      return order.sum_fact;
+    }
+    return new Intl.NumberFormat('ru-RU').format(numeric).replace(/\u00A0/g, ' ');
+  })();
   return (
     <Button
       variant="outlined"
@@ -73,7 +80,7 @@ export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, de
     >
       <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '4px' }}>
         <span style={{ opacity: .8, whiteSpace: 'nowrap' }}>{text}</span>
-        <span style={{ fontSize: '1.3em', fontWeight: 700 }}>{order.sum_fact}</span>
+        <span style={{ fontSize: '1.3em', fontWeight: 700 }}>{formattedSum}</span>
         <span style={{ opacity: .8 }}>&#8381;</span>
         <span style={{ fontSize: '1em', opacity: .85, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
           {previousValuta && (
