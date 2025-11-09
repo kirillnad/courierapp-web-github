@@ -69,6 +69,7 @@ export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, de
     <Button
       variant="outlined"
       className="sum-chip"
+      fullWidth
     >
       <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '4px' }}>
         <span style={{ opacity: .8, whiteSpace: 'nowrap' }}>{text}</span>
@@ -82,7 +83,7 @@ export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, de
             <span style={{ opacity: .6 }}>→</span>
           )}
           {currentValuta && (
-            <span style={{ fontWeight: 600 }}>{currentValuta}</span>
+            <span style={{ fontWeight: 600, color: changedValuta ? '#d32f2f' : 'inherit' }}>{currentValuta}</span>
           )}
         </span>
       </span>
@@ -99,8 +100,12 @@ export const ValutaButton = ({ order, active, valuta, onClick }) => {
     <Button
       variant="outlined"
       onClick={onClick}
-      color={active ? 'secondary' : 'default'}
-      style={{ whiteSpace: 'pre-wrap' }}
+      style={{
+        whiteSpace: 'nowrap',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        minWidth: 'fit-content'
+      }}
     >
       {label}
     </Button>

@@ -59,39 +59,45 @@ const Order = ({
       )}
 
       <div className={classes.order_buttons}>
-        <SummaButton
-          order={order}
-          prepayment={order.prepayment}
-          text={order.prepayment ? 'Предоплата:' : 'К оплате:'}
-          valuta={order.prepayment ? '' : originalPaymentLabel}
-          changedValuta={paymentChanged ? effectivePaymentLabel : undefined}
-          decoration={paymentChanged ? 'line-through' : 'none'}
-        />
-
-        {(courier_status === 'free') && (selected === true) ? (
-          <DeselectButton
+        <div className={classes.sum_wrapper}>
+          <SummaButton
             order={order}
-            onClick={on_order_deselect}
+            prepayment={order.prepayment}
+            text={order.prepayment ? 'Предоплата:' : 'К оплате:'}
+            valuta={order.prepayment ? '' : originalPaymentLabel}
+            changedValuta={paymentChanged ? effectivePaymentLabel : undefined}
+            decoration={paymentChanged ? 'line-through' : 'none'}
           />
-        ) : ''}
+        </div>
 
-        {(courier_status === 'free') && (selected !== true) ? (
-          <SelectButton
-            order={order}
-            onClick={on_order_select}
-          />
-        ) : ''}
+      </div>
 
-        {(courier_status !== 'free') ? (
+      {(courier_status === 'free') && (
+        <div className={classes.select_toggle}>
+          {(selected === true) ? (
+            <DeselectButton
+              order={order}
+              onClick={on_order_deselect}
+            />
+          ) : (
+            <SelectButton
+              order={order}
+              onClick={on_order_select}
+            />
+          )}
+        </div>
+      )}
+
+      {(courier_status !== 'free') && (
+        <div className={classes.payment_toggle}>
           <ValutaButton
             order={order}
             active={(order.prepayment === 0) && paymentChanged}
             valuta={toggleTargetLabel}
             onClick={on_valuta_changed}
           />
-        ) : ''}
-
-      </div>
+        </div>
+      )}
 
       {courier_status !== 'free' &&
         <DeliverButton
@@ -126,6 +132,31 @@ const styles = theme => ({
     width: '100%',
     justifyContent: 'space-between',
     margin: '0px',
+  },
+  sum_wrapper: {
+    flexGrow: 1,
+    minWidth: 0,
+    display: 'flex',
+    width: '100%',
+  },
+  payment_toggle: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& > *': {
+      width: 'auto',
+      maxWidth: '100%',
+    }
+  },
+  select_toggle: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'flex-start',
+    '& > *': {
+      flex: 1,
+    }
   },
   order_title: {
     display: 'flex',
