@@ -17,9 +17,7 @@ const Order = ({
   const isCashlessOriginal = order.cashless === 1;
   const paymentChanged = valutaChanged.has(order.uid);
   const isCashlessEffective = paymentChanged ? !isCashlessOriginal : isCashlessOriginal;
-  const originalPaymentLabel = order.prepayment ? '' : (isCashlessOriginal ? 'Картой' : 'Наличными');
   const effectivePaymentLabel = order.prepayment ? '' : (isCashlessEffective ? 'Картой' : 'Наличными');
-  const toggleTargetLabel = order.prepayment ? '' : (isCashlessEffective ? 'Наличными' : 'Картой');
 
   return (
     <ListItem
@@ -58,18 +56,23 @@ const Order = ({
         )
       )}
 
-      <div className={classes.order_buttons}>
+      <div className={classes.payment_row}>
         <div className={classes.sum_wrapper}>
           <SummaButton
             order={order}
-            prepayment={order.prepayment}
             text={order.prepayment ? 'Предоплата:' : 'К оплате:'}
-            valuta={order.prepayment ? '' : originalPaymentLabel}
-            changedValuta={paymentChanged ? effectivePaymentLabel : undefined}
-            decoration={paymentChanged ? 'line-through' : 'none'}
           />
         </div>
-
+        {(courier_status !== 'free') && (
+          <div className={classes.payment_toggle}>
+            <ValutaButton
+              order={order}
+              active={(order.prepayment === 0) && paymentChanged}
+              label={effectivePaymentLabel}
+              onClick={on_valuta_changed}
+            />
+          </div>
+        )}
       </div>
 
       {(courier_status === 'free') && (
@@ -85,17 +88,6 @@ const Order = ({
               onClick={on_order_select}
             />
           )}
-        </div>
-      )}
-
-      {(courier_status !== 'free') && (
-        <div className={classes.payment_toggle}>
-          <ValutaButton
-            order={order}
-            active={(order.prepayment === 0) && paymentChanged}
-            valuta={toggleTargetLabel}
-            onClick={on_valuta_changed}
-          />
         </div>
       )}
 
@@ -133,21 +125,25 @@ const styles = theme => ({
     justifyContent: 'space-between',
     margin: '0px',
   },
+  payment_row: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'nowrap',
+    gap: theme.spacing(1.5),
+    alignItems: 'stretch',
+    marginTop: theme.spacing(1),
+  },
   sum_wrapper: {
-    flexGrow: 1,
+    flex: '1 1 auto',
     minWidth: 0,
     display: 'flex',
-    width: '100%',
+    marginRight: theme.spacing(1.5),
   },
   payment_toggle: {
-    width: '100%',
-    marginTop: theme.spacing(1),
     display: 'flex',
+    alignItems: 'stretch',
     justifyContent: 'flex-end',
-    '& > *': {
-      width: 'auto',
-      maxWidth: '100%',
-    }
+    flexShrink: 0,
   },
   select_toggle: {
     width: '100%',

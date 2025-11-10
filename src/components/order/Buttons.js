@@ -62,9 +62,7 @@ export const AllOrdersButton = ({ orders = [] }) => (
   </Button>
 )
 
-export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, decoration }) => {
-  const currentValuta = changedValuta || valuta;
-  const previousValuta = changedValuta ? valuta : null;
+export const SummaButton = ({ order, text }) => {
   const formattedSum = (() => {
     const numeric = Number(order.sum_fact);
     if (Number.isNaN(numeric)) {
@@ -78,43 +76,29 @@ export const SummaButton = ({ order, prepayment, valuta, changedValuta, text, de
       className="sum-chip"
       fullWidth
     >
-      <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '4px' }}>
-        <span style={{ opacity: .8, whiteSpace: 'nowrap' }}>{text}</span>
+      <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+        <span style={{ opacity: .8, whiteSpace: 'nowrap', flexShrink: 0 }}>{text}</span>
         <span style={{ fontSize: '1.3em', fontWeight: 700 }}>{formattedSum}</span>
         <span style={{ opacity: .8 }}>&#8381;</span>
-        <span style={{ fontSize: '1em', opacity: .85, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-          {previousValuta && (
-            <span style={{ textDecoration: `${decoration}`, opacity: .75 }}>{previousValuta}</span>
-          )}
-          {previousValuta && currentValuta && (
-            <span style={{ opacity: .6 }}>→</span>
-          )}
-          {currentValuta && (
-            <span style={{ fontWeight: 600, color: changedValuta ? '#d32f2f' : 'inherit' }}>{currentValuta}</span>
-          )}
-        </span>
       </span>
     </Button>
   )
 }
 
-export const ValutaButton = ({ order, active, valuta, onClick }) => {
+export const ValutaButton = ({ order, active, label, onClick }) => {
   if (order.prepayment === 1) {
     return null;
   }
-  const label = valuta ? `или ${valuta} ?` : 'Изменить';
+  const displayLabel = label || '';
   return (
     <Button
-      variant="outlined"
+      variant={active ? 'contained' : 'outlined'}
       onClick={onClick}
-      style={{
-        whiteSpace: 'nowrap',
-        paddingLeft: '16px',
-        paddingRight: '16px',
-        minWidth: 'fit-content'
-      }}
+      color={active ? 'secondary' : 'default'}
+      className={`sum-chip payment-chip${active ? ' payment-chip--active' : ''}`}
+      style={{ minWidth: 'fit-content' }}
     >
-      {label}
+      {displayLabel}
     </Button>
   )
 }

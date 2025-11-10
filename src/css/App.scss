@@ -57,15 +57,34 @@ html, body {
   color: var(--text) !important;
   border-radius: 12px !important;
   text-transform: none !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   min-height: 36px !important;
-  height: 36px !important;
   background: #eff2f6 !important;
   border-width: 1px !important;
-  white-space: nowrap !important;
+  white-space: normal !important;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px;
+  line-height: 1.2;
+}
+
+.payment-chip {
+  min-width: 128px;
+  justify-content: center;
+  padding: 6px 20px !important;
+  font-weight: 600;
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  background: var(--surface) !important;
+  box-shadow: 0 3px 10px rgba(16, 24, 40, 0.12);
+}
+
+.payment-chip--active {
+  background: #fde8ed !important;
+  color: #b71c1c !important;
+  border-color: #f8b3bf !important;
+  box-shadow: 0 0 0 1px rgba(183, 28, 28, 0.25);
 }
 
 /* Ensure action button matches SummaButton height */
